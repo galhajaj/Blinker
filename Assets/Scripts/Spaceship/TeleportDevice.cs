@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 public class TeleportDevice : MonoBehaviour 
 {
-    public SpaceshipData Data;
+    public ParamsManager Data;
     public GameObject Core;
 
     private Queue<TeleportCore> _cores = new Queue<TeleportCore>();
     // =================================================================================================
     void Start()
     {
-        for (int i = 0; i < Data.TeleportCoresNumber; ++i)
+        for (int i = 0; i < Data.GetIntParam("TeleportCores"); ++i)
         {
             addCore();
         }
@@ -28,6 +28,7 @@ public class TeleportDevice : MonoBehaviour
     // =================================================================================================
     private void addCore()
     {
+        Debug.Log("Add teleport core");
         GameObject coreObject = Instantiate(Core, this.transform) as GameObject;
         TeleportCore coreScript = coreObject.GetComponent<TeleportCore>();
         _cores.Enqueue( coreScript );
@@ -38,7 +39,7 @@ public class TeleportDevice : MonoBehaviour
         if (_cores.Peek().IsReady) // check if next core is ready
         {
             // add cooldown to used core
-            _cores.Peek().AddCooldown(Data.TeleportCooldownDuration);
+            _cores.Peek().AddCooldown(Data.GetFloatParam("TeleportCooldown"));
 
             // cycle used core to beginning of queue
             _cores.Enqueue(_cores.Dequeue());
