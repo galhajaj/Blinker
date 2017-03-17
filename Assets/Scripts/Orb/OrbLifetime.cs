@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class OrbLifetime : MonoBehaviour 
 {
-
-	// Use this for initialization
+    public float FadeFactor = 1.0F;
+    public float FadingSize = 0.001F;
 	void Start () 
     {
 		
 	}
 	
-	// Update is called once per frame
 	void Update () 
     {
-		
+        float shrinkingSize = Time.deltaTime * FadeFactor;
+        this.transform.localScale -= new Vector3(shrinkingSize, shrinkingSize);
+
+        if (this.transform.localScale.x <= FadingSize) // check only one side, it's symetrical...
+            Destroy(this.gameObject);
 	}
 }
