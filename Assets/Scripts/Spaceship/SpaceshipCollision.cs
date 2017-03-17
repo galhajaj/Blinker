@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SpaceshipCollision : MonoBehaviour 
 {
-	void Start () 
+    public float CashAmountFactor = 1.0F;
+
+    void Start () 
     {
 		
 	}
@@ -27,6 +29,11 @@ public class SpaceshipCollision : MonoBehaviour
         else if (coll.gameObject.tag == "Orb")
         {
             Destroy(coll.gameObject);
+            int cash = PlayerPrefs.GetInt("Cash");
+            float factor = coll.transform.lossyScale.x * CashAmountFactor;
+            int bonus = Mathf.RoundToInt(Mathf.Pow(factor, factor));
+            int newCash = cash + bonus;
+            PlayerPrefs.SetInt("Cash", newCash);
         }
     }
 }
