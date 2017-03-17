@@ -61,11 +61,16 @@ public class UpgradeButton : MonoBehaviour
                 bonus = "+" + bonus;
         }
 
-        _text.text = Title + ", " + valueStr + ", " + bonus;
+        _text.text = Title + ", " + valueStr + ", " + bonus + " [" + Cost + " $]";
     }
     // =================================================================================================
     void TaskOnClick()
     {
+        int cash = PlayerPrefs.GetInt("Cash");
+        if (cash < Cost)
+            return;
+        PlayerPrefs.SetInt("Cash", cash - Cost);
+
         if (ParamType == UpgradeVariableType.INT_PARAM)
         {
             float value = PlayerPrefs.GetFloat(ParamName) + Addition;
